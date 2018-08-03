@@ -7,7 +7,7 @@ setup(
     name='tinyurls',
     version='0.0.2',
     packages=find_packages(),
-    url='https://github.com/rangertaha/tinyurl',
+    url='https://github.com/rangertaha/tinyurls',
     license='MIT',
     install_requires=['tornado', 'SQLAlchemy', 'validators', 'fluent',
                       'pycodestyle', 'prometheus-client'],
