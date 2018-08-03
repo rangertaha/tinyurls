@@ -13,6 +13,10 @@ with md5.
 
 
 ## Installation
+Optionally clone code
+```bash
+git clone git@github.com:rangertaha/tinyurls.git
+```
 Use virtual environment
 ```bash
 virtualenv env
