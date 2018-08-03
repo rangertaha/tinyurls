@@ -13,7 +13,7 @@ with md5.
 
 
 ## Installation
-Optionally clone code
+Clone code
 ```bash
 git clone git@github.com:rangertaha/tinyurls.git
 ```
