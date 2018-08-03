@@ -45,7 +45,7 @@ optional arguments:
   -d DATABASE, --database DATABASE Database to use
 
 
-tinyurls -p 8888
+tinyurls -p 9999
 
 ```
 
