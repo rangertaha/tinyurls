@@ -4,7 +4,7 @@ URL shortening service to be used in a microservices environment.
 
 This service does the following:
 1. Takes a long url and stores an md5 key and the url in a database table. 
-The md5 key is used to lookup the long url. This step returns an short link 
+The md5 key is used to lookup the long url. This step returns a short link 
 with md5.
 2. Takes a short link and redirects you to the long link.
 
