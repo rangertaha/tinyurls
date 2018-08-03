@@ -10,6 +10,7 @@ import hashlib
 import logging
 import logging.config
 import logging.handlers
+import argparse
 
 # Third party
 import validators
@@ -25,6 +26,21 @@ from .models import URL, Base
 # Logging
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
+
+# Cli arguments to override default settings.
+parser = argparse.ArgumentParser()
+parser.add_argument("-p", "--port", help="Port used for this service",
+                    type=int, default=8888)
+
+parser.add_argument("-d", "--database", help="Database to use",
+                    type=str, default='sqlite:///db.sqlite3')
+
+# TODO: Added Fluend to the settigs
+# parser.add_argument("--logging-host", help="Fluentd service host to log to",
+#                     type=str)
+# parser.add_argument("--logging-port", help="Fluentd service port to log to",
+#                     type=str)
+args = parser.parse_args()
 
 
 class InvalidUrlException(tornado.web.HTTPError):
@@ -45,7 +61,7 @@ class PrometheusHandler(tornado.web.RequestHandler):
 class BaseHandler(tornado.web.RequestHandler):
     def prepare(self):
         """Preparing database connection"""
-        self.engine = create_engine(DATABASE)
+        self.engine = create_engine(args.database)
         # Bind the engine to the metadata of the Base class so that the
         # declaratives can be accessed through a DBSession instance
         Base.metadata.bind = self.engine
@@ -147,7 +163,7 @@ def service():
 
         (r"/(.*)", ShortHandler),
     ])
-    svc.listen(HTTP_PORT)
+    svc.listen(args.port)
     tornado.ioloop.IOLoop.current().start()
 
 
