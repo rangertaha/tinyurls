@@ -24,6 +24,10 @@ Change into tinyurls directory and install
 cd tinyurls
 python setup.py install 
 
+or
+
+pip install tinyurls
+
 ```
 
 ## Execute
