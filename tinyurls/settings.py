@@ -6,7 +6,7 @@
 """
 
 
-HTTP_PORT = 7777
+HTTP_PORT = 8888
 
 LOGGING = {
     'version': 1,
