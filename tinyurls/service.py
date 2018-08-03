@@ -29,16 +29,16 @@ logger = logging.getLogger(__name__)
 
 # Cli arguments to override default settings.
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--port", help="Port used for this service",
+parser.add_argument('-p', '--port', help='Port used for this service',
                     type=int, default=8888)
 
-parser.add_argument("-d", "--database", help="Database to use",
+parser.add_argument('-d', '--database', help='Database to use',
                     type=str, default='sqlite:///db.sqlite3')
 
 # TODO: Added Fluend to the settigs
-# parser.add_argument("--logging-host", help="Fluentd service host to log to",
+# parser.add_argument('--logging-host', help='Fluentd service host to log to',
 #                     type=str)
-# parser.add_argument("--logging-port", help="Fluentd service port to log to",
+# parser.add_argument('--logging-port', help='Fluentd service port to log to',
 #                     type=str)
 args = parser.parse_args()
 
