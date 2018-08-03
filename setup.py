@@ -1,5 +1,8 @@
 from setuptools import find_packages, setup
 
+with open('README.md') as file:
+    long_description = file.read()
+
 setup(
     name='tinyurls',
     version='0.0.1',
@@ -12,6 +15,7 @@ setup(
     author_email='rangertaha@gmail.com',
     description='URL shortening service to be used in a microservices '
                 'environment.',
+    long_description=long_description,
     scripts=['bin/tinyurls'],
     classifiers=(
         'License :: OSI Approved :: MIT License',
