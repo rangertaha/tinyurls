@@ -7,7 +7,7 @@ the long url.
 """
 
 # Third party
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 

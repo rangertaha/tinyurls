@@ -51,6 +51,8 @@ install tinyurl`
 
 ## TODO:
 
+* **Logging**: Need to log events. Not really logging anything now.
+
 * **Hash**: I need to make an algorithm to give me a short string that a 
 human can type into the url. This would replace the md5 hash function.
 

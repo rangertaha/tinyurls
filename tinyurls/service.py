@@ -30,10 +30,10 @@ logger = logging.getLogger(__name__)
 # Cli arguments to override default settings.
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--port', help='Port used for this service',
-                    type=int, default=8888)
+                    type=int, default=HTTP_PORT)
 
 parser.add_argument('-d', '--database', help='Database to use',
-                    type=str, default='sqlite:///db.sqlite3')
+                    type=str, default=DATABASE)
 
 # TODO: Added Fluend to the settigs
 # parser.add_argument('--logging-host', help='Fluentd service host to log to',
@@ -123,11 +123,14 @@ class BaseHandler(tornado.web.RequestHandler):
 class ShortHandler(BaseHandler):
     """Endpoint handler for creating short urls and redirecting."""
 
-    def post(self, *args):
+    def post(self, *pargs):
         """Creates a short url from a long url."""
         if self.valid(self.request.body.decode("utf-8")):
             record = self.create(self.request.body)
-            self.write(record.short)
+            short_url = '{}://{}/{}'.format(self.request.protocol,
+                                          self.request.host,
+                                          record.short)
+            self.write(short_url)
         else:
             raise InvalidUrlException(reason='Invalid URL', status_code=400)
 
