@@ -1,0 +1,66 @@
+# Dev Notes
+
+I am most familiar with Django, however Django is heavy so I choose
+Tornado for its speed. Honestly, since its a microservice and simple. Golang
+ is the way. Below are the features I am going to try to focus on.
+
+I am building this service to work in a microservices architecture. See
+http://microservices.io for details. However, I am not implementing *service
+discovery*, *tracing* and a few other things. I am hoping to run this service
+in a Kubernetes environment where I can take advantage of it's features
+rather then build it into this service.
+
+
+## Wish List
+* **Packaging**: I would like to make this a package installable with `pip
+install tinyurl`
+
+* **Docker**: I would like to have this available as a docker image.
+
+* **Database**: Ideally use on ORM
+
+* **Logging: Ideally**, I would like to log to an external Fluentd service.
+
+* **Instrumentation**: I normally use Prometheus with Grafana for metrics and
+alerting. Would be nice to have that as an option
+
+* **PEP8**: Lets not forget to check for issues
+
+* **Tests**: Lets try to make some tests.
+
+* **CLI Optoins**: Ideally have command line options
+
+
+I Have gone over 2 hours and should stop. I have not completed all that I
+initially wanted.
+
+## Done
+* **Database**: Initially I started using the Django ORM. However, I did not 
+think it was a good fit so I moved to SQLAlchemy. I am new to SQLAlchemy and
+ have
+  only used it once about 5 years ago. I am not simply connecting to the
+  sqlite3 database with its connector because i want support for multiple
+  backend databases. Ideally I would update it to support an external
+  database such as PostgreSQL,
+
+* **PEP8**: Lets not forget to check for issues
+* **CLI Optoins**: Added some options
+* **Packaging**: I would like to make this a package installable with `pip
+install tinyurl`
+
+
+## TODO:
+
+* **Hash**: I need to make an algorithm to give me a short string that a 
+human can type into the url. This would replace the md5 hash function.
+
+* **Docker**: I would like to have this available as a docker image.
+
+* **Logging: Ideally**, Its all setup for logging to Fluentd, I just need to
+ setup an insance of Fluentd and setup the logging settings.
+
+* **Instrumentation**: Did not get around to it. I would also need to 
+install Prometheus.
+
+* **Tests**: Lets try to make some tests.
+
