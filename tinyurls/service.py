@@ -160,7 +160,7 @@ class ShortHandler(BaseHandler):
             self.write('curl -X POST -H "Content-Type: text/plain" --data '
                        '"http://www.example.com/this-is-the-longest-url-in'
                        '-the-world" {}://{}'.format(self.request.protocol,
-                                      self.request.host))
+                                                    self.request.host))
 
 
 def service():
