@@ -5,9 +5,11 @@
 the long url.
 
 """
+# Standard
+import base64
 
 # Third party
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 
@@ -19,10 +21,12 @@ Base = declarative_base()
 
 class URL(Base):
     __tablename__ = 'urls'
-    # MD5 is only 32 characters long. However, I want to have the
-    # flexibility to change the hashing algorithm
-    short = Column(String(128), primary_key=True, index=True)
-    long = Column(String(4000))
+    id = Column(Integer, primary_key=True, index=True)
+    url = Column(String(4000), index=True)
+
+    def key(self):
+        id = str(self.id).encode('utf-8')
+        return base64.b64encode(id).decode('utf-8')
 
 
 # Stores data in the local directory's db file.

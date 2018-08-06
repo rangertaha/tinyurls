@@ -6,6 +6,7 @@
 """
 
 # Standard
+import base64
 import hashlib
 import logging
 import logging.config
@@ -53,6 +54,7 @@ class PrometheusHandler(tornado.web.RequestHandler):
     an instrumentation endpoint. See http://microservices.io for
     architecture info
     """
+
     def get(self):
         # TODO: Export metrics
         pass
@@ -69,20 +71,6 @@ class BaseHandler(tornado.web.RequestHandler):
         DBSession = sessionmaker(bind=self.engine)
         self.session = DBSession()
 
-    def hash(self, url):
-        """Hashing the long url into the key to look and redirect to the
-        long url.
-
-        :param url: String
-        :return: String md5
-        """
-
-        # TODO: Change this to a shorter string usable by humans. MD5 is too
-        # long for typing in the url but ok for computers
-        h = hashlib.md5()
-        h.update(url)
-        return h.hexdigest()
-
     def valid(self, url):
         """Validating the url prior to saving in the DB.
 
@@ -93,70 +81,87 @@ class BaseHandler(tornado.web.RequestHandler):
             return True
         return False
 
-    def create(self, long_url):
+    def create(self, url):
         """Retrieves or creates URL records
 
-        :param long_url: Long url
-        :return: Short url
+        :param url: Long url
+        :return: url record from the database
         """
-        short_url = self.hash(long_url)
-
-        # Retrieve record from DB
-        record = self.retrieve(short_url)
+        record = self.session.query(URL).filter(URL.url == url).first()
         if not record:
             # Create record in DB
-            record = URL(short=short_url, long=long_url)
+            record = URL(url=url)
             self.session.add(record)
             self.session.commit()
 
         return record
 
-    def retrieve(self, url):
+    def retrieve(self, key):
         """Retrieves a record from the DB
 
-        :param url: Short url
-        :return: record from the database
+        :param key: key
+        :return: url record from the database
         """
-        return self.session.query(URL).filter(URL.short == url).first()
+        id = int(base64.b64decode(key))
+        print(id)
+        return self.session.query(URL).filter(URL.id == id).first()
+
+    def remove(self, key):
+        """Deletes a record from the DB
+
+        :param key: key
+        :return: url record from the database
+        """
+        id = int(base64.b64decode(key))
+        record = self.session.query(URL).filter(URL.id == id).first()
+        if record:
+            # Delete record from DB
+            self.session.delete(record)
+            self.session.commit()
+            return True
+        return False
 
 
 class ShortHandler(BaseHandler):
     """Endpoint handler for creating short urls and redirecting."""
 
+    def delete(self, key):
+        """Deletes url record"""
+        if self.remove(key):
+            self.write('Successfully deleted url')
+        else:
+            raise InvalidUrlException(reason='Not Found', status_code=404)
+
     def post(self, *pargs):
         """Creates a short url from a long url."""
         if self.valid(self.request.body.decode("utf-8")):
             record = self.create(self.request.body)
-            short_url = '{}://{}/{}'.format(self.request.protocol,
-                                          self.request.host,
-                                          record.short)
-            self.write(short_url)
+            url = '{}://{}/{}'.format(self.request.protocol,
+                                      self.request.host,
+                                      record.key())
+            self.write(url)
         else:
             raise InvalidUrlException(reason='Invalid URL', status_code=400)
 
-    def get(self, url):
+    def get(self, key):
         """Retrieve and redirect to long url in DB.
 
         :param url: Short url
         :return: Redirects or response message.
         """
-        if url:
+        if key:
             # Get the url record from the urls table
-            record = self.retrieve(url)
+            record = self.retrieve(key)
             if record:
-                self.redirect(record.long)
+                self.redirect(record.url)
             else:
                 raise InvalidUrlException(reason='Not Found', status_code=404)
 
         else:
-            # Not sure what to put here. Since this is the root / it should
-            # have some sort of response.
-            # One option is to check for content type to differentiate humans
-            # from services
-            # if content type is 'text/html' show an html tool page for humans
-            # if content type is 'text/plain' show this message or maybe
-            # application/json and return a json response body
-            self.write('Welcome to the link shortening service')
+            self.write('curl -X POST -H "Content-Type: text/plain" --data '
+                       '"http://www.example.com/this-is-the-longest-url-in'
+                       '-the-world" {}://{}'.format(self.request.protocol,
+                                      self.request.host))
 
 
 def service():
