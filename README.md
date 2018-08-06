@@ -52,8 +52,8 @@ tinyurls -p 9999
 In a new terminal post the link to shorten
 ```bash
 curl -X POST -H "Content-Type: text/plain" --data "https://www.google.com/search?q=tornado+logging+to+ELK&rlz=1C5CHFA_enUS752US752&oq=tornado+logging+to+ELK&aqs=chrome..69i57.9210j1j4&sourceid=chrome&ie=UTF-8" http://127.0.0.1:9999
-http://127.0.0.1:9999/284380fea5eaf2464e06a3873647d324
+http://127.0.0.1:9999/Mg==
 ```
 
-In the browser go to `http://127.0.0.1:9999/284380fea5eaf2464e06a3873647d324`
+In the browser go to `http://127.0.0.1:9999/Mg==`
 
