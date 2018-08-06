@@ -5,7 +5,7 @@ with open('README.md') as file:
 
 setup(
     name='tinyurls',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     url='https://github.com/rangertaha/tinyurls',
     license='MIT',
