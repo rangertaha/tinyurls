@@ -103,7 +103,6 @@ class BaseHandler(tornado.web.RequestHandler):
         :return: url record from the database
         """
         id = int(base64.b64decode(key))
-        print(id)
         return self.session.query(URL).filter(URL.id == id).first()
 
     def remove(self, key):
