@@ -1,5 +1,5 @@
 tornado==5.1
 SQLAlchemy==1.2.10
-validators==0.12.2
+validators==0.12.6
 fluent==0.8.0
 pycodestyle==2.4.0
